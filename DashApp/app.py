@@ -15,18 +15,18 @@ sys.path.append("..")
 from components import top_bar
 from components import sidebar
 
-app = dash.Dash(__name__)
+app = dash.Dash(__name__, external_stylesheets=[dbc.themes.GRID])
 
 #initialiation
 content = html.Div(id="page-content", children=[])
 
 app.layout = html.Div([
     dcc.Location(id="url"),
-    top_bar.topbar,
+    sidebar.sidebar,
     content,
-    sidebar.sidebar
-    
-], style={'columnCount' : 2})
+    top_bar.topbar,
+    ], style={'columnCount' : 1}
+)
 
 @app.callback(
 Output("page-content","children"),
@@ -48,4 +48,4 @@ def render_page_content(pathname):
     )
 
 if __name__=='__main__':
-    app.run_server(debug=True,port=80)
+    app.run_server(debug=True,port=8050)
