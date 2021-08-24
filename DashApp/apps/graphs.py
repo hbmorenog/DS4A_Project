@@ -65,26 +65,7 @@ TITLE_STYLE={
     "grid-column-start":"3",
     "grid-column-end": "4"
 }
-DATE_PICKER_STYLE={
-    "color": "#31893d",
-    "margin":"auto",
-    "width":"100%",
-    "font-size":"1.2em",
-    #Grid Layout
-    "grid-column-start":"5",
-    "grid-column-end": "6"
-}
-MODEL_DROPDOWN_STYLE={
-    "color": "#31893d",
-    "margin":"auto",
-    "width":"100%",
-    "font-size":"1.2em",
-    "-ms-transform": "translateY(-50%)",
-    #Grid Layout
-    "grid-column-start":"6",
-    "grid-column-end": "7",
-}
-PERIOD_DROPDOWN_STYLE={
+PERIOD_DROPDOWN_STYLE = {
     "color": "#31893d",
     "margin":"auto",
     "width":"100%",
@@ -108,67 +89,71 @@ MAIN_DIV_STYLE = {
 FIRST_ROW_STYLE = {
     "position": "relative",
     "width": "100%",
-    "height":"15vh",
-    #Grid Layout
-    "display":"grid",
-    "grid-template-columns":"repeat(3,1fr)",
-    "gap":"20px",
-    "grid-template-rows":"1",
-}
-SUMMARY_DATA_STYLE = {
-    "position": "relative",
-    "background-color": "#fafafa",
-    "margin": "auto",
+    "height":"40vh",
     #Grid Layout
     "display":"grid",
     "grid-template-columns":"repeat(2,1fr)",
     "gap":"20px",
     "grid-template-rows":"1",
 }
-CENTRAL_ICON_STYLE= {
+FIRST_COL_STYLE = {
+    "position": "relative",
+    "background-color": "#fafafa",
+    "margin": "auto",
+    #Grid Layout
+    "grid-column-start":"1",
+    "grid-column-end": "2"
+}
+SECOND_COL_STYLE = {
+    "position": "relative",
+    "background-color": "#fafafa",
+    "margin": "auto",
+    #Grid Layout
+    "grid-column-start":"2",
+    "grid-column-end": "3"
+}
+SUMMARY_DATA_STYLE = {
+    "position": "relative",
+    "background-color": "#fafafa",
+    "margin": "auto",
+    "height": "10vh",
+    "width":"40vw",
+    #Grid Layout
+    "display":"grid",
+    "grid-template-columns":"repeat(2,1fr)",
+    "gap":"20px",
+    "grid-template-rows":"1",
+}
+CENTRAL_ICON_STYLE = {
     "position": "relative",
     "height": "30px",
     "width":"30px",
     "display": "flex",
     "margin": "auto",
 }
-TEXT_STYLE= {
+TEXT_STYLE = {
     "position": "relative",
     "display": "flex",
     "justify-content": "center",
     "margin": "auto",
 }
+PIE_GRAPH = {
+    "position": "relative",
+    "left": 0,
+    "height": "40vh",
+    "width":"40vw",
+}
 SECOND_ROW_STYLE = {
     "position": "relative",
     "width": "100%",
-    "height":"85vh",
-    #Grid Layout
-    "display":"grid",
-    "grid-template-columns":"repeat(3,1fr)",
-    "gap":"0px",
-    "grid-template-rows":"1",
+    "height":"60vh",
 }
-TIMELINE_GRAPH={
+TIMELINE_GRAPH ={
     "position": "relative",
-    "left": "10%",
-    "height": "80%",
-    "width":"80%",
-    #Grid Layout
-    "grid-column-start":"1",
-    "grid-column-end": "3",
-    "grid-row-start":"1",
-    "grid-row-end":"3"
-}
-PIE_GRAPH={
-    "position": "relative",
-    "left": "10%",
-    "height": "80%",
-    "width":"80%",
-    #Grid Layout
-    "grid-column-start":"3",
-    "grid-column-end": "4",
-    "grid-row-start":"1",
-    "grid-row-end":"3"
+    "top": "5vh",
+    "left": "5vw",
+    "height": "40vh",
+    "width":"85vw",
 }
 
 content= html.Div([ 
@@ -176,26 +161,8 @@ content= html.Div([
     html.Div([
     html.H5("EnergyApp", style= ENERGYAPP_STYLE),
 
-    html.H5("HOME", style= TITLE_STYLE),
+    html.H5("GRAPHS", style= TITLE_STYLE),
 
-    dcc.DatePickerSingle(
-        id='date-picker',
-        min_date_allowed=datetime.date.today() + datetime.timedelta(days=1),
-        max_date_allowed=datetime.date.today().replace(year= datetime.date.today().year+ 3),
-        date=datetime.date.today() + datetime.timedelta(days=1),
-        style=DATE_PICKER_STYLE
-    ),
-    
-    dcc.Input(
-        id= 'future-interals',
-        type= 'number',
-        placeholder= 'Future intervals',
-        min= 0,
-        max= 100,
-        step= 1,
-        style=MODEL_DROPDOWN_STYLE
-    ),
-    
     dcc.Dropdown(
         id='dropdown-period',
         options=[
@@ -212,34 +179,44 @@ content= html.Div([
     html.Div([
         html.Div([
             html.Div([
-                html.H3("RESERVES", style= TEXT_STYLE),
-                html.H5(str(reserves_lvl)+" m3", style= TEXT_STYLE),
-            ]),
-            html.Img(src= "/assets/img/droplet-half.svg", style= CENTRAL_ICON_STYLE),
+                html.Div([
+                    html.H3("MEAN PRICE", style= TEXT_STYLE),
+                ]),
+                html.H3("$ 1.340", style= TEXT_STYLE),
+            ],
+            style= SUMMARY_DATA_STYLE,
+            ),
+
+            html.Div([
+                html.Div([
+                    html.H3("ENSO", style= TEXT_STYLE),
+                ]),
+                html.H3("0.5", style= TEXT_STYLE),
+            ],
+            style= SUMMARY_DATA_STYLE,
+            ),
+
+            html.Div([
+                html.Div([
+                    html.H3("RESERVES LEVEL", style= TEXT_STYLE),
+                ]),
+                html.H3("5'100.234 m3", style= TEXT_STYLE)
+            ],
+            style= SUMMARY_DATA_STYLE,
+            ),
         ],
-        style= SUMMARY_DATA_STYLE,
+        style= FIRST_COL_STYLE,
         ),
 
         html.Div([
-            html.Div([
-                html.H3("CURRENT PRICE", style= TEXT_STYLE),
-                html.H5("$ "+str(price), style= TEXT_STYLE),
-            ]),
-            html.Img(src= "/assets/img/tags.svg", style= CENTRAL_ICON_STYLE),
+            dcc.Graph(
+                id='pie-graph',
+                figure=pie_graph
+                ,style=PIE_GRAPH
+            )
         ],
-        style= SUMMARY_DATA_STYLE,
-        ),
-
-        html.Div([
-            html.Div([
-                html.H3("FORECAST", style= TEXT_STYLE),
-                html.H5("$ "+str(forecast), style= TEXT_STYLE)
-            ]),
-            html.Img(src= "/assets/img/graph-up.svg", style= CENTRAL_ICON_STYLE),
-        ],
-        style= SUMMARY_DATA_STYLE,
-        ),
-
+        style= SECOND_COL_STYLE,
+        )
     ],
     style= FIRST_ROW_STYLE,
     ),
@@ -250,12 +227,6 @@ content= html.Div([
             figure=timeline_graph
             ,style=TIMELINE_GRAPH
         ),
-
-        dcc.Graph(
-            id='pie-graph',
-            figure=pie_graph
-            ,style=PIE_GRAPH
-        )
     ],
     style= SECOND_ROW_STYLE,
     ),

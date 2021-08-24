@@ -9,7 +9,7 @@ import dash_html_components as html
 from dash.dependencies import Input, Output
 import dash_bootstrap_components as dbc
 import dash_core_components as dcc
-from apps import home,information
+from apps import home, graphs, information
 sys.path.append("..")
   
 from components import top_bar
@@ -24,7 +24,7 @@ app.layout = html.Div([
     dcc.Location(id="url"),
     sidebar.sidebar,
     content,
-    top_bar.topbar,
+    # top_bar.topbar,
     ], style={'columnCount' : 1}
 )
 
@@ -35,10 +35,10 @@ Output("page-content","children"),
 def render_page_content(pathname):
     if pathname == "/":
         return home.content
-    if pathname == "/information":
+    if pathname == "/graphs": # AQUI DEBERÍA SER "/graphs"
+        return graphs.content
+    elif pathname == "/information": # AQUI DEBERÍA SER "/information"
         return information.content
-    elif pathname == "/how-it-works":
-        return [html.H2('HowItWorks')]
     return dbc.Jumbotron(
         [
             html.H1("404: Not found", className="text-danger"),

@@ -24,12 +24,12 @@ SIDEBAR_STYLE = {
     "left": 0,
     "width": "5%",
     "height": "100vh",
-    "background-color": "#ffff72",##f8f9fa
+    "background-color": "#1564bf",
 }
 TITLE_BOX_STYLE= {
     "position": "relative",
     "top": 0,
-    "background-color": "#c8b900",
+    "background-color": "#9e9e9e",
     "height": "10vh",
 }
 LOGO_STYLE= {
@@ -69,12 +69,12 @@ sidebar = html.Div([
         ),
         html.Div([
             html.Img(src= "/assets/img/file-bar-graph-fill.svg", style= ICON_STYLE),
-            dbc.NavLink("GRAPHS", href="/information", active="exact", style=TEXT_STYLE),
+            dbc.NavLink("GRAPHS", href="/graphs", active="exact", style=TEXT_STYLE),
         ],
         ),
         html.Div([
         html.Img(src= "/assets/img/newspaper.svg", style= ICON_STYLE),
-        dbc.NavLink("INFO", href="/", active="exact", style=TEXT_STYLE),
+        dbc.NavLink("INFO", href="/information", active="exact", style=TEXT_STYLE),
         ]),
         ]),
 

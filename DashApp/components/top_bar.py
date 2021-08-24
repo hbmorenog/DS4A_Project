@@ -17,7 +17,7 @@ from dash_html_components.H5 import H5
 app = dash.Dash(__name__, external_stylesheets=[dbc.themes.BOOTSTRAP])
 
 
-# styling the sidebar
+# Styling the TopBar
 TOP_BAR_STYLE = {
     "position": "fixed",
     "top": 0,
@@ -25,7 +25,7 @@ TOP_BAR_STYLE = {
     "width": "95vw",
     "height" : "10vh",
     "padding": "4px",
-    "background-color": "#ffff72",
+    "background-color": "#1564bf",
     #Grid Layout
     "display":"grid",
     "grid-template-columns":"repeat(7,1fr)",
@@ -36,7 +36,6 @@ ENERGYAPP_STYLE={
     "top": 0,
     "text-align": "left",
     "color": "#31893d",
-    # "margin":"auto",
     "font-size":"2vh",
     "font-family":"Helvetica",
     #Grid Layout
@@ -44,11 +43,9 @@ ENERGYAPP_STYLE={
     "grid-column-end": "2"
 }
 TITLE_STYLE={
-    # "position": "relative",
     "top": 0,
     "text-align": "left",
     "color": "#64ba69",
-    # "margin":"auto",
     "font-size":"2vh",
     "font-family":"Helvetica",
     #Grid Layout
@@ -56,11 +53,8 @@ TITLE_STYLE={
     "grid-column-end": "4"
 }
 DATE_PICKER_STYLE={
-    # "position": "relative",
     "color": "#31893d",
-    # "right": 0,
     "margin":"auto",
-    # "height":"100%",
     "width":"100%",
     "font-size":"1.2em",
     #Grid Layout
@@ -68,10 +62,8 @@ DATE_PICKER_STYLE={
     "grid-column-end": "6"
 }
 MODEL_DROPDOWN_STYLE={
-    # "position": "relative",
     "color": "#31893d",
     "margin":"auto",
-    # "height":"100%",
     "width":"100%",
     "font-size":"1.2em",
     "-ms-transform": "translateY(-50%)",
@@ -80,10 +72,8 @@ MODEL_DROPDOWN_STYLE={
     "grid-column-end": "7",
 }
 PERIOD_DROPDOWN_STYLE={
-    # "position": "relative",
     "color": "#31893d",
     "margin":"auto",
-    # "height":"100%",
     "width":"100%",
     "font-size":"1.2em",
     "-ms-transform": "translateY(-50%)",
@@ -106,15 +96,13 @@ topbar = html.Div([
         style=DATE_PICKER_STYLE
     ),
     
-    dcc.Dropdown(
-        id='dropdown-model',
-        options=[
-            {'label': 'Model 1', 'value': '0'},
-            {'label': 'Model 2', 'value': '1'},
-            {'label': 'Model 3', 'value': '2'},
-            {'label': 'Model 4', 'value': '3'}
-        ],
-        value='0',
+    dcc.Input(
+        id= 'future-interals',
+        type= 'number',
+        placeholder= 'Future intervals',
+        min= 0,
+        max= 100,
+        step= 1,
         style=MODEL_DROPDOWN_STYLE
     ),
     
