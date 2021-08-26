@@ -24,7 +24,6 @@ app.layout = html.Div([
     dcc.Location(id="url"),
     sidebar.sidebar,
     content,
-    # top_bar.topbar,
     ], style={'columnCount' : 1}
 )
 
@@ -35,9 +34,9 @@ Output("page-content","children"),
 def render_page_content(pathname):
     if pathname == "/":
         return home.content
-    if pathname == "/graphs": # AQUI DEBERÍA SER "/graphs"
+    if pathname == "/graphs":
         return graphs.content
-    elif pathname == "/information": # AQUI DEBERÍA SER "/information"
+    elif pathname == "/information":
         return information.content
     return dbc.Jumbotron(
         [

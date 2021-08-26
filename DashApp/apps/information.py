@@ -41,26 +41,28 @@ TOP_BAR_STYLE = {
     "background-color": "#1564bf",
     #Grid Layout
     "display":"grid",
-    "grid-template-columns":"repeat(7,1fr)",
+    "grid-template-columns":"repeat(8,1fr)",
     "gap":"5px",
     "grid-template-rows":"1",
 }
 ENERGYAPP_STYLE={
-    "top": 0,
     "text-align": "left",
-    "color": "#31893d",
-    "font-size":"2vh",
-    "font-family":"Helvetica",
+    "margin": "auto",
+    #Font Style
+    "color": "#ffffff",
+    "font-size":"7vh",
+    "font-family":"Karumbi",
     #Grid Layout
     "grid-column-start":"1",
     "grid-column-end": "2"
 }
 TITLE_STYLE={
-    "top": 0,
     "text-align": "left",
-    "color": "#64ba69",
-    "font-size":"2vh",
-    "font-family":"Helvetica",
+    "margin": "auto",
+    #Font Style
+    "color": "#15B9BF",
+    "font-size":"4vh",
+    "font-family":"Purisa",
     #Grid Layout
     "grid-column-start":"3",
     "grid-column-end": "4"
@@ -72,13 +74,13 @@ MAIN_DIV_STYLE = {
     "position": "fixed",
     "right": 0,
     "top":"10vh",
-    "width": "95%",
+    "width": "95vw",
     "height":"90vh",
     "background-color": "#bbdefb",
 }
 FIRST_ROW_STYLE = {
     "position": "relative",
-    "width": "100%",
+    "width": "95vw",
     "height":"95vh",
     #Grid Layout
     "display":"grid",
@@ -89,7 +91,10 @@ FIRST_ROW_STYLE = {
 FIRST_COL_STYLE = {
     "position": "relative",
     "background-color": "#fafafa",
-    "margin": "auto",
+    "top": "3vh",
+    "left": "3vw",
+    "width": "45vw",
+    "height":"80vh",
     #Grid Layout
     "grid-column-start":"1",
     "grid-column-end": "2"
@@ -97,7 +102,10 @@ FIRST_COL_STYLE = {
 SECOND_COL_STYLE = {
     "position": "relative",
     "background-color": "#fafafa",
-    "margin": "auto",
+    "top": "12vh",
+    "left": "3vw",
+    "width": "40vw",
+    "height":"60vh",
     #Grid Layout
     "grid-column-start":"2",
     "grid-column-end": "3"
@@ -126,12 +134,13 @@ TEXT_STYLE = {
     "display": "flex",
     "justify-content": "center",
     "margin": "auto",
+    #Font Style
+    "color": "#1B15BF",
+    "font-family":"Sawasdee",
 }
 PIE_GRAPH = {
     "position": "relative",
     "left": 0,
-    "height": "70vh",
-    "width":"40vw",
 }
 
 content= html.Div([ 
@@ -145,8 +154,13 @@ content= html.Div([
     ),
 
     html.Div([
-        html.H3("HOW IT WORKS", style= TEXT_STYLE),
-    ]),
+        html.H2("HOW IT WORKS", style= TEXT_STYLE),
+    ],
+    style= {
+        "position": "relative",
+        "top": "2vh",
+    }
+    ),
 
     html.Div([
         html.Div([

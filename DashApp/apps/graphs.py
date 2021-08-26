@@ -41,39 +41,42 @@ TOP_BAR_STYLE = {
     "background-color": "#1564bf",
     #Grid Layout
     "display":"grid",
-    "grid-template-columns":"repeat(7,1fr)",
+    "grid-template-columns":"repeat(8,1fr)",
     "gap":"5px",
     "grid-template-rows":"1",
 }
 ENERGYAPP_STYLE={
-    "top": 0,
     "text-align": "left",
-    "color": "#31893d",
-    "font-size":"2vh",
-    "font-family":"Helvetica",
+    "margin": "auto",
+    #Font Style
+    "color": "#ffffff",
+    "font-size":"7vh",
+    "font-family":"Karumbi",
     #Grid Layout
     "grid-column-start":"1",
     "grid-column-end": "2"
 }
 TITLE_STYLE={
-    "top": 0,
     "text-align": "left",
-    "color": "#64ba69",
-    "font-size":"2vh",
-    "font-family":"Helvetica",
+    "margin": "auto",
+    #Font Style
+    "color": "#15B9BF",
+    "font-size":"4vh",
+    "font-family":"Purisa",
     #Grid Layout
     "grid-column-start":"3",
     "grid-column-end": "4"
 }
 PERIOD_DROPDOWN_STYLE = {
-    "color": "#31893d",
-    "margin":"auto",
-    "width":"100%",
+    "color": "#1B15BF",
+    "margin-top":"0.5vh",
+    "height":"6vh",
+    "width": "10vw",
     "font-size":"1.2em",
     "-ms-transform": "translateY(-50%)",
     #Grid Layout
-    "grid-column-start":"7",
-    "grid-column-end": "8",
+    "grid-column-start":"8",
+    "grid-column-end": "9",
 }
 
 #---------------------------------
@@ -82,7 +85,7 @@ MAIN_DIV_STYLE = {
     "position": "fixed",
     "right": 0,
     "top":"10vh",
-    "width": "95%",
+    "width": "95vw",
     "height":"90vh",
     "background-color": "#bbdefb",
 }
@@ -115,6 +118,7 @@ SECOND_COL_STYLE = {
 SUMMARY_DATA_STYLE = {
     "position": "relative",
     "background-color": "#fafafa",
+    "top": "1vh",
     "margin": "auto",
     "height": "10vh",
     "width":"40vw",
@@ -136,23 +140,27 @@ TEXT_STYLE = {
     "display": "flex",
     "justify-content": "center",
     "margin": "auto",
+    #Font Style
+    "color": "#1B15BF",
+    "font-family":"Sawasdee",
 }
 PIE_GRAPH = {
     "position": "relative",
+    "top": "0vh",
     "left": 0,
-    "height": "40vh",
+    "height": "35vh",
     "width":"40vw",
 }
 SECOND_ROW_STYLE = {
     "position": "relative",
-    "width": "100%",
+    "width": "95vw",
     "height":"60vh",
 }
 TIMELINE_GRAPH ={
     "position": "relative",
-    "top": "5vh",
+    "top": "0vh",
     "left": "5vw",
-    "height": "40vh",
+    "height": "45vh",
     "width":"85vw",
 }
 
@@ -170,7 +178,8 @@ content= html.Div([
             {'label': 'Monthly', 'value': 'Monthly'},
             {'label': 'Yearly', 'value': 'Yearly'},
         ],
-        value='Daily',
+        # value='Daily',
+        placeholder= 'Period',
         style=PERIOD_DROPDOWN_STYLE
     )],
     style=TOP_BAR_STYLE,
@@ -180,27 +189,30 @@ content= html.Div([
         html.Div([
             html.Div([
                 html.Div([
-                    html.H3("MEAN PRICE", style= TEXT_STYLE),
+                    html.H2("MEAN PRICE", style= TEXT_STYLE),
+                    html.H5("Mean price  in the current month", style= TEXT_STYLE),
                 ]),
-                html.H3("$ 1.340", style= TEXT_STYLE),
+                html.H2("$ 1.340", style= TEXT_STYLE),
             ],
             style= SUMMARY_DATA_STYLE,
             ),
 
             html.Div([
                 html.Div([
-                    html.H3("ENSO", style= TEXT_STYLE),
+                    html.H2("ENSO", style= TEXT_STYLE),
+                    html.H5("El Niño–Southern Oscillation (ENSO) ", style= TEXT_STYLE),
                 ]),
-                html.H3("0.5", style= TEXT_STYLE),
+                html.H2("0.5", style= TEXT_STYLE),
             ],
             style= SUMMARY_DATA_STYLE,
             ),
 
             html.Div([
                 html.Div([
-                    html.H3("RESERVES LEVEL", style= TEXT_STYLE),
+                    html.H2("RESERVES LEVEL", style= TEXT_STYLE),
+                    html.H5("Total amount of water stored in reservoirs", style= TEXT_STYLE),
                 ]),
-                html.H3("5'100.234 m3", style= TEXT_STYLE)
+                html.H2("5'100.234 m3", style= TEXT_STYLE)
             ],
             style= SUMMARY_DATA_STYLE,
             ),

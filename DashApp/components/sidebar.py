@@ -22,7 +22,7 @@ SIDEBAR_STYLE = {
     "position": "fixed",
     "top": 0,
     "left": 0,
-    "width": "5%",
+    "width": "5vw",
     "height": "100vh",
     "background-color": "#1564bf",
 }
@@ -53,6 +53,10 @@ TEXT_STYLE= {
     "display": "flex",
     "justify-content": "center",
     "margin": "auto",
+    #Font Style
+    "color": "#FFFFFF",
+    "font-size": "2vh",
+    "font-family":"Sawasdee",
 }
 
 sidebar = html.Div([

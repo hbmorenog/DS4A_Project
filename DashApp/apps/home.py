@@ -41,58 +41,74 @@ TOP_BAR_STYLE = {
     "background-color": "#1564bf",
     #Grid Layout
     "display":"grid",
-    "grid-template-columns":"repeat(7,1fr)",
+    "grid-template-columns":"repeat(8,1fr)",
     "gap":"5px",
     "grid-template-rows":"1",
 }
 ENERGYAPP_STYLE={
-    "top": 0,
     "text-align": "left",
-    "color": "#31893d",
-    "font-size":"2vh",
-    "font-family":"Helvetica",
+    "margin": "auto",
+    #Font Style
+    "color": "#ffffff",
+    "font-size":"7vh",
+    "font-family":"Karumbi",
     #Grid Layout
     "grid-column-start":"1",
     "grid-column-end": "2"
 }
 TITLE_STYLE={
-    "top": 0,
     "text-align": "left",
-    "color": "#64ba69",
-    "font-size":"2vh",
-    "font-family":"Helvetica",
+    "margin": "auto",
+    #Font Style
+    "color": "#15B9BF",
+    "font-size":"4vh",
+    "font-family":"Purisa",
     #Grid Layout
     "grid-column-start":"3",
     "grid-column-end": "4"
 }
 DATE_PICKER_STYLE={
-    "color": "#31893d",
-    "margin":"auto",
-    "width":"100%",
-    "font-size":"1.2em",
+    "color": "#1B15BF",
+    "margin-top":"1vh",
+    "height":"4vh",
+    "width": "10vw",
+    "font-size":"1em",
     #Grid Layout
     "grid-column-start":"5",
     "grid-column-end": "6"
 }
-MODEL_DROPDOWN_STYLE={
-    "color": "#31893d",
-    "margin":"auto",
-    "width":"100%",
+FUTURE_INTERVALS_STYLE={
+    "color": "#1B15BF",
+    "margin-top":"1vh",
+    "height":"6vh",
+    "width": "10vw",
     "font-size":"1.2em",
     "-ms-transform": "translateY(-50%)",
     #Grid Layout
     "grid-column-start":"6",
     "grid-column-end": "7",
 }
-PERIOD_DROPDOWN_STYLE={
-    "color": "#31893d",
-    "margin":"auto",
-    "width":"100%",
+MODEL_DROPDOWN_STYLE={
+    "color": "#1B15BF",
+    "margin-top":"0.5vh",
+    "height":"6vh",
+    "width": "10vw",
     "font-size":"1.2em",
     "-ms-transform": "translateY(-50%)",
     #Grid Layout
     "grid-column-start":"7",
     "grid-column-end": "8",
+}
+PERIOD_DROPDOWN_STYLE={
+    "color": "#1B15BF",
+    "margin-top":"0.5vh",
+    "height":"6vh",
+    "width": "10vw",
+    "font-size":"1.2em",
+    "-ms-transform": "translateY(-50%)",
+    #Grid Layout
+    "grid-column-start":"8",
+    "grid-column-end": "9",
 }
 
 #---------------------------------
@@ -101,13 +117,13 @@ MAIN_DIV_STYLE = {
     "position": "fixed",
     "right": 0,
     "top":"10vh",
-    "width": "95%",
+    "width": "95vw",
     "height":"90vh",
     "background-color": "#bbdefb",
 }
 FIRST_ROW_STYLE = {
     "position": "relative",
-    "width": "100%",
+    "width": "95vw",
     "height":"15vh",
     #Grid Layout
     "display":"grid",
@@ -119,6 +135,7 @@ SUMMARY_DATA_STYLE = {
     "position": "relative",
     "background-color": "#fafafa",
     "margin": "auto",
+    "padding": "15px",
     #Grid Layout
     "display":"grid",
     "grid-template-columns":"repeat(2,1fr)",
@@ -137,10 +154,13 @@ TEXT_STYLE= {
     "display": "flex",
     "justify-content": "center",
     "margin": "auto",
+    #Font Style
+    "color": "#1B15BF",
+    "font-family":"Sawasdee",
 }
 SECOND_ROW_STYLE = {
     "position": "relative",
-    "width": "100%",
+    "width": "95vw",
     "height":"85vh",
     #Grid Layout
     "display":"grid",
@@ -150,61 +170,81 @@ SECOND_ROW_STYLE = {
 }
 TIMELINE_GRAPH={
     "position": "relative",
-    "left": "10%",
-    "height": "80%",
-    "width":"80%",
+    "left": "2vw",
+    "height": "70vh",
+    "width":"60vw",
     #Grid Layout
     "grid-column-start":"1",
     "grid-column-end": "3",
     "grid-row-start":"1",
     "grid-row-end":"3"
 }
+ERROR_DATA_STYLE = {
+    "position": "relative",
+    "background-color": "#fafafa",
+    "left": "3vw",
+    # "margin": "auto",
+    "height": "15vh",
+    "width":"25vw",
+}
 PIE_GRAPH={
     "position": "relative",
-    "left": "10%",
-    "height": "80%",
-    "width":"80%",
+    "top": "5vh",
+    "left": "3vw",
+    "height": "50vh",
+    "width":"25vw",
     #Grid Layout
     "grid-column-start":"3",
     "grid-column-end": "4",
-    "grid-row-start":"1",
-    "grid-row-end":"3"
 }
 
 content= html.Div([ 
 
     html.Div([
-    html.H5("EnergyApp", style= ENERGYAPP_STYLE),
+        html.H5("EnergyApp", style= ENERGYAPP_STYLE),
 
-    html.H5("HOME", style= TITLE_STYLE),
+        html.H5("HOME", style= TITLE_STYLE),
 
-    dcc.DatePickerSingle(
-        id='date-picker',
-        min_date_allowed=datetime.date.today() + datetime.timedelta(days=1),
-        max_date_allowed=datetime.date.today().replace(year= datetime.date.today().year+ 3),
-        date=datetime.date.today() + datetime.timedelta(days=1),
-        style=DATE_PICKER_STYLE
-    ),
-    
-    dcc.Input(
-        id= 'future-interals',
-        type= 'number',
-        placeholder= 'Future intervals',
-        min= 0,
-        max= 100,
-        step= 1,
-        style=MODEL_DROPDOWN_STYLE
-    ),
-    
-    dcc.Dropdown(
-        id='dropdown-period',
-        options=[
-            {'label': 'Daily', 'value': 'Daily'},
-            {'label': 'Monthly', 'value': 'Monthly'},
-            {'label': 'Yearly', 'value': 'Yearly'},
-        ],
-        value='Daily',
-        style=PERIOD_DROPDOWN_STYLE
+        dcc.DatePickerSingle(
+            id='date-picker',
+            min_date_allowed=datetime.date.today() + datetime.timedelta(days=1),
+            max_date_allowed=datetime.date.today().replace(year= datetime.date.today().year+ 3),
+            date=datetime.date.today() + datetime.timedelta(days=1),
+            placeholder= 'Date',
+            style=DATE_PICKER_STYLE
+        ),
+        
+        dcc.Input(
+            id= 'future-interals',
+            type= 'number',
+            placeholder= 'Future intervals',
+            min= 0,
+            max= 100,
+            step= 1,
+            style=FUTURE_INTERVALS_STYLE
+        ),
+
+        dcc.Dropdown(
+            id='dropdown-model',
+            options=[
+                {'label': 'Model1', 'value': 'Model1'},
+                {'label': 'Model2', 'value': 'Model2'},
+            ],
+            # value='Model1',
+            placeholder= 'Model',
+            style=MODEL_DROPDOWN_STYLE
+        ),
+        
+        dcc.Dropdown(
+            id='dropdown-period',
+            options=[
+                {'label': 'Daily', 'value': 'Daily'},
+                {'label': 'Monthly', 'value': 'Monthly'},
+                {'label': 'Yearly', 'value': 'Yearly'},
+            ],
+            # value='Daily',
+            placeholder= 'Period',
+            style=PERIOD_DROPDOWN_STYLE
     )],
     style=TOP_BAR_STYLE,
     ),
@@ -212,8 +252,8 @@ content= html.Div([
     html.Div([
         html.Div([
             html.Div([
-                html.H3("RESERVES", style= TEXT_STYLE),
-                html.H5(str(reserves_lvl)+" m3", style= TEXT_STYLE),
+                html.H2("RESERVES", style= TEXT_STYLE),
+                html.H3(str(reserves_lvl)+" m3", style= TEXT_STYLE),
             ]),
             html.Img(src= "/assets/img/droplet-half.svg", style= CENTRAL_ICON_STYLE),
         ],
@@ -222,8 +262,8 @@ content= html.Div([
 
         html.Div([
             html.Div([
-                html.H3("CURRENT PRICE", style= TEXT_STYLE),
-                html.H5("$ "+str(price), style= TEXT_STYLE),
+                html.H2("CURRENT PRICE", style= TEXT_STYLE),
+                html.H3("$ "+str(price), style= TEXT_STYLE),
             ]),
             html.Img(src= "/assets/img/tags.svg", style= CENTRAL_ICON_STYLE),
         ],
@@ -232,8 +272,8 @@ content= html.Div([
 
         html.Div([
             html.Div([
-                html.H3("FORECAST", style= TEXT_STYLE),
-                html.H5("$ "+str(forecast), style= TEXT_STYLE)
+                html.H2("FORECAST", style= TEXT_STYLE),
+                html.H3("$ "+str(forecast), style= TEXT_STYLE)
             ]),
             html.Img(src= "/assets/img/graph-up.svg", style= CENTRAL_ICON_STYLE),
         ],
@@ -251,11 +291,26 @@ content= html.Div([
             ,style=TIMELINE_GRAPH
         ),
 
-        dcc.Graph(
-            id='pie-graph',
-            figure=pie_graph
-            ,style=PIE_GRAPH
-        )
+        html.Div([
+            html.Div([
+                html.Div([
+                    html.H2("PERCENTAGE ERROR", style= TEXT_STYLE),
+                    html.H3("75%", style= TEXT_STYLE),
+                ],
+                style= {
+                        "position": "relative",
+                        "top": "4vh",
+                }
+                ),
+            ],
+            style= ERROR_DATA_STYLE,
+            ),
+            dcc.Graph(
+                id='pie-graph',
+                figure=pie_graph
+                ,style=PIE_GRAPH
+            )
+        ])
     ],
     style= SECOND_ROW_STYLE,
     ),
