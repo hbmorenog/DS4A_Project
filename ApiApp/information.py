@@ -4,7 +4,6 @@ Created on Mon Aug 23 07:55:54 2021
 
 @author: dusty
 """
-import sys
 from flask_restful import Resource,reqparse
 from psycopg_util import Pyscopg_util
 class Data(Resource):
@@ -21,8 +20,16 @@ class Data(Resource):
         try:
             util=Pyscopg_util()
             util.connect_to_db()
-            data=util.select_demanda_energia(date=args['date'])
-            return data
+            if args['period']=="daily":
+                chunk_size=1
+            if args['period']=="weekly":
+                chunk_size=7
+            if args['period']=="monthly":
+                chunk_size=30
+            if args['period']=="yearly":
+                chunk_size=365
+            data=util.select_demanda_energia(date=args['date'],chunk_size=chunk_size)
+            return data.to_dict()
         finally:
             util.close_connection()
     def get(self):

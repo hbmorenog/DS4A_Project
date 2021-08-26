@@ -6,10 +6,7 @@ Created on Mon Aug 23 08:29:54 2021
 """
 import psycopg2
 import sys
-from psycopg2 import __version__ as psycopg2_version
-from psycopg2 import connect
-from psycopg2 import OperationalError, errorcodes, errors
-import datetime
+import pandas as pd
 class Pyscopg_util():
     def __init__(self):
         self.connection=None
@@ -65,19 +62,28 @@ class Pyscopg_util():
             print("Exception while closing connection: ")
             self.print_pyscopg_exception(e)
             
-    def select_demanda_energia(self,date):
+    def select_demanda_energia(self,date,chunk_size):
         try:
             query='''select de."Fecha", de."DemandaEnergiakwh",de."Generacionkwh" from public."Demanda_energia" de
-                    where de."Fecha">to_date(%s, 'dd-mm-yyyy')
+                    where de."Fecha"<=to_date(%s, 'dd-mm-yyyy')
+                    order by de."Fecha" desc
+                    limit %s
             '''
-            params=(date,)
+            params=(date,chunk_size*12)
             cur = self.connection.cursor()
             cur.execute(query,params)
             raw=cur.fetchall()
-            data=dict()
+            data=pd.DataFrame()
             for row in raw:
-                data[row[0].strftime('%d/%m/%Y')]={'Demanda':row[1],'Generacion':row[2]}
-            return data
+                serie=pd.Series({'Demanda':row[1],'Generacion':row[2]},name=row[0].strftime('%d/%m/%Y'))
+                data=data.append(serie)
+            means=pd.DataFrame()
+            for start in range(0, data.shape[0], chunk_size):
+                df_subset = data.iloc[start:start + chunk_size]
+                mean=df_subset.mean()
+                mean.name=data.index.values[start]
+                means=means.append(mean)
+            return means
         except Exception as e:
             print("Error while querying to Postgres")
             self.print_pyscopg_exception(e)
