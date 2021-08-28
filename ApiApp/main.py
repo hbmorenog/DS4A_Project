@@ -7,13 +7,14 @@ Created on Mon Aug 23 07:53:03 2021
 
 from flask import Flask
 from flask_restful import Api
-import ast
-from information import Data 
+from historic import Historic 
+from data import Data
 from forecast import Forecast
 app= Flask(__name__)
 api=Api(app)
 
-api.add_resource(Data, '/information')
+api.add_resource(Historic, '/historic')
+api.add_resource(Data,'/data')
 api.add_resource(Forecast,'/forecast')
 if __name__ == '__main__':
-    app.run(port=80)
+    app.run(host='0.0.0.0',port=80)
