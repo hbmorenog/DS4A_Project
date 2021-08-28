@@ -29,6 +29,7 @@ class Data(Resource):
             if args['period']=="yearly":
                 chunk_size=365
             data=util.select_informacion(date=args['date'],chunk_size=chunk_size)
-            return data.to_dict()
+            print(data)
+            return data
         finally:
             util.close_connection()

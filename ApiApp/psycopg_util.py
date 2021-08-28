@@ -7,6 +7,8 @@ Created on Mon Aug 23 08:29:54 2021
 import psycopg2
 import sys
 import pandas as pd
+from statistics import mean
+from datetime import datetime,timedelta
 class Pyscopg_util():
     def __init__(self):
         self.connection=None
@@ -124,8 +126,8 @@ class Pyscopg_util():
         try:
             #precio_medio
             query='''select  pbn."promedio" from public."precio_bolsa_nacional" pbn
-                    where de."Fecha"<=to_date(%s, 'yyyy-mm-dd')
-                    order by de."Fecha" desc
+                    where pbn."fecha"<=to_date(%s, 'yyyy-mm-dd')
+                    order by pbn."fecha" desc
                     limit %s
             '''
             params=(date,chunk_size)
@@ -135,11 +137,11 @@ class Pyscopg_util():
             data=list()
             for row in raw:
                 data.append(row[0])
-            precio_medio=data.mean()
+            precio_medio=mean(data)
             #nivel_reservas_medio
             query='''select  rd."vol" from public."reserva_diaria" rd
                     where rd."fecha"<=to_date(%s, 'yyyy-mm-dd')
-                    order by de."fecha" desc
+                    order by rd."fecha" desc
                     limit %s
             '''
             params=(date,chunk_size)
@@ -149,36 +151,37 @@ class Pyscopg_util():
             data=list()
             for row in raw:
                 data.append(row[0])
-            nivel_reservas_medio=data.mean()            
+            nivel_reservas_medio=mean(data)*1000000            
             
             #enso_medio
             query='''select  enso."prom_anual" from public."enso" enso
                     where enso."year"=%s
             '''
-            params=(date.split('-')[0])
+            params=(date.split('-')[0],)
             cur = self.connection.cursor()
             cur.execute(query,params)
             raw=cur.fetchall()
             enso_medio=row[0]           
             
             #tipo_generacion_medio
-            query='''select g."tipo_generacion",g."fecha", avg(h0+h1+h2+h3+h4+h5+h6+h7+h8+h9+h10+h11+h12+h13+h14+h15+h16+h17+h18+h19+h20+h21+h22+h23) from public."generacion" g
-                    group by g."fecha",tipo_generacion
-                    where g."fecha"<=to_date(%s, 'yyyy-mm-dd')
-                    order by g."Fecha" desc
-                    limit %s
-            
+            query='''
+                select sub."tipo_generacion",avg(sub."average") from (
+                	select g."tipo_generacion",g."fecha", avg(h0+h1+h2+h3+h4+h5+h6+h7+h8+h9+h10+h11+h12+h13+h14+h15+h16+h17+h18+h19+h20+h21+h22+h23) average from public."generacion" g
+                	where g."fecha"<=to_date(%s, 'yyyy-mm-dd') and g."fecha">=to_date(%s, 'yyyy-mm-dd')
+                	group by g."fecha",g."tipo_generacion"
+                	order by g."fecha" desc
+                	) as sub
+            	group by sub."tipo_generacion"
             '''
-            params=(date,chunk_size)
+            params=(date,str(datetime.strptime(date,'%Y-%m-%d')-timedelta(chunk_size)))
             cur = self.connection.cursor()
             cur.execute(query,params)
             raw=cur.fetchall()
-            data=pd.DataFrame()
+            data=dict()
             for row in raw:
-                serie=pd.Series({"cantidad":row[2]},name=row[0])
-                data=data.append(serie)
-            tipo_generacion_medio=data.means()
-            return {"mean_price":precio_medio,"enso":enso_medio,"reserves_level":nivel_reservas_medio,"contribution":tipo_generacion_medio}
+                data[row[0]]=str(row[1])
+            data.update({"mean_price":str(precio_medio),"enso":str(enso_medio),"reserves_level":str(nivel_reservas_medio)})
+            return data
         except Exception as e:
             print("Error while querying to Postgres")
             self.print_pyscopg_exception(e)
