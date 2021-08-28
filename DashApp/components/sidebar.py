@@ -18,6 +18,8 @@ df = pd.read_csv('https://raw.githubusercontent.com/Coding-with-Adam/Dash-by-Plo
 
 app = dash.Dash(__name__, external_stylesheets=[dbc.themes.BOOTSTRAP])
 
+# ashdbasdbasiudasuyd
+
 SIDEBAR_STYLE = {
     "position": "fixed",
     "top": 0,
