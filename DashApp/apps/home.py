@@ -12,6 +12,7 @@ import dash_bootstrap_components as dbc
 import dash_core_components as dcc
 import datetime
 from dash_html_components import Div
+from datetime import date
 import pandas as pd
   
 # append the path of the
@@ -23,7 +24,7 @@ df = pd.read_csv("https://raw.githubusercontent.com/uiuc-cse/data-fa14/gh-pages/
 
 
 timeline_graph = px.line(df,  y="sepal_width", color="species", line_shape="spline", render_mode="svg")
-pie_graph = px.pie(df, values='species', names='species', title='Especies')  # ESTA LÍNEA CORRIGE LA FALTA DEL GRÁFICO DE PASTEL
+# pie_graph = px.pie(df, values='species', names='species', title='Especies')  # ESTA LÍNEA CORRIGE LA FALTA DEL GRÁFICO DE PASTEL
 
 reserves_lvl=21324
 price=211324
@@ -44,6 +45,7 @@ TOP_BAR_STYLE = {
     "grid-template-columns":"repeat(8,1fr)",
     "gap":"5px",
     "grid-template-rows":"1",
+    "zIndex": 2,
 }
 ENERGYAPP_STYLE={
     "text-align": "left",
@@ -74,19 +76,8 @@ DATE_PICKER_STYLE={
     "width": "10vw",
     "font-size":"1em",
     #Grid Layout
-    "grid-column-start":"5",
-    "grid-column-end": "6"
-}
-FUTURE_INTERVALS_STYLE={
-    "color": "#1B15BF",
-    "margin-top":"1vh",
-    "height":"6vh",
-    "width": "10vw",
-    "font-size":"1.2em",
-    "-ms-transform": "translateY(-50%)",
-    #Grid Layout
     "grid-column-start":"6",
-    "grid-column-end": "7",
+    "grid-column-end": "7"
 }
 MODEL_DROPDOWN_STYLE={
     "color": "#1B15BF",
@@ -120,6 +111,7 @@ MAIN_DIV_STYLE = {
     "width": "95vw",
     "height":"90vh",
     "background-color": "#bbdefb",
+    "zIndex": 1,
 }
 FIRST_ROW_STYLE = {
     "position": "relative",
@@ -206,43 +198,32 @@ content= html.Div([
         html.H5("HOME", style= TITLE_STYLE),
 
         dcc.DatePickerSingle(
-            id='date-picker',
-            min_date_allowed=datetime.date.today() + datetime.timedelta(days=1),
-            max_date_allowed=datetime.date.today().replace(year= datetime.date.today().year+ 3),
-            date=datetime.date.today() + datetime.timedelta(days=1),
-            placeholder= 'Date',
-            style=DATE_PICKER_STYLE
+            id= 'home-date-input',
+            date=date(2020, 12, 20),
+            display_format= 'Y-M-D',
+            style= DATE_PICKER_STYLE
         ),
         
-        dcc.Input(
-            id= 'future-interals',
-            type= 'number',
-            placeholder= 'Future intervals',
-            min= 0,
-            max= 100,
-            step= 1,
-            style=FUTURE_INTERVALS_STYLE
-        ),
-
         dcc.Dropdown(
-            id='dropdown-model',
+            id='home-model-input',
             options=[
-                {'label': 'Model1', 'value': 'Model1'},
-                {'label': 'Model2', 'value': 'Model2'},
+                {'label': 'Linear regression', 'value': 'linear_regression'},
+                {'label': 'LSTM', 'value': 'lstm'},
             ],
-            # value='Model1',
-            placeholder= 'Model',
+            value='linear_regression',
+            placeholder= 'Linear regression',
             style=MODEL_DROPDOWN_STYLE
         ),
         
         dcc.Dropdown(
-            id='dropdown-period',
+            id='home-period-input',
             options=[
-                {'label': 'Daily', 'value': 'Daily'},
-                {'label': 'Monthly', 'value': 'Monthly'},
-                {'label': 'Yearly', 'value': 'Yearly'},
+                {'label': 'Daily', 'value': 'daily'},
+                {'label': 'Weekly', 'value': 'weekly'},
+                {'label': 'Monthly', 'value': 'monthly'},
+                {'label': 'Yearly', 'value': 'yearly'},
             ],
-            # value='Daily',
+            value='weekly',
             placeholder= 'Period',
             style=PERIOD_DROPDOWN_STYLE
     )],
@@ -253,7 +234,8 @@ content= html.Div([
         html.Div([
             html.Div([
                 html.H2("RESERVES", style= TEXT_STYLE),
-                html.H3(str(reserves_lvl)+" m3", style= TEXT_STYLE),
+                # html.H3(str(reserves_lvl)+" m3", style= TEXT_STYLE),
+                html.H2(id= "reserves-level-home", style= TEXT_STYLE),
             ]),
             html.Img(src= "/assets/img/droplet-half.svg", style= CENTRAL_ICON_STYLE),
         ],
@@ -306,9 +288,9 @@ content= html.Div([
             style= ERROR_DATA_STYLE,
             ),
             dcc.Graph(
-                id='pie-graph',
-                figure=pie_graph
-                ,style=PIE_GRAPH
+                id='contribution-home',
+                # figure=pie_graph
+                style=PIE_GRAPH,
             )
         ])
     ],

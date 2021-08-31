@@ -12,17 +12,43 @@ import dash_bootstrap_components as dbc
 import dash_core_components as dcc
 import datetime
 from dash_html_components import Div
+from datetime import date
 import pandas as pd
   
 # append the path of the
 # parent directory
 
 import plotly.express as px
+import requests
+
+# # Connect to SupplyDemand - Line graph
+# url = 'http://3.19.208.29:80/data'
+# params =   {"date":"20-12-2020",
+#  "period":"weekly"
+# }
+# r = requests.post(url = url, params = params) 
+# response = r.json()
+
+# df_DemandGeneration = pd.DataFrame.from_dict(response, orient="index")
+# df_DemandGeneration = df_DemandGeneration.transpose()
+# df_DemandGeneration.columns = ["Demand", "Generation"]
+
+# SupplyDemand_graph = px.line(df_DemandGeneration,  y=["Demand", "Generation"], line_shape="spline", render_mode="svg", title= "DEMAND AND GENERATION")
+# # Horizontal Legends - Position Top Right
+# SupplyDemand_graph.update_layout(legend=dict(
+#     orientation="h",
+#     yanchor="bottom",
+#     y=1.02,
+#     xanchor="right",
+#     x=1
+# ))
+
+# Connect to GenerationTypeWeek - Line graph
 
 df = pd.read_csv("https://raw.githubusercontent.com/uiuc-cse/data-fa14/gh-pages/data/iris.csv") 
 
 
-timeline_graph = px.line(df,  y="sepal_width", color="species", line_shape="spline", render_mode="svg")
+timeline_graph = px.line(df,  y=["sepal_length", "sepal_width"], color="species", line_shape="spline", render_mode="svg")
 pie_graph = px.pie(df, values='species', names='species', title='Especies')  # ESTA LÍNEA CORRIGE LA FALTA DEL GRÁFICO DE PASTEL
 
 reserves_lvl=21324
@@ -44,6 +70,7 @@ TOP_BAR_STYLE = {
     "grid-template-columns":"repeat(8,1fr)",
     "gap":"5px",
     "grid-template-rows":"1",
+    "zIndex": 2,
 }
 ENERGYAPP_STYLE={
     "text-align": "left",
@@ -67,6 +94,16 @@ TITLE_STYLE={
     "grid-column-start":"3",
     "grid-column-end": "4"
 }
+DATE_PICKER_STYLE={
+    "color": "#1B15BF",
+    "margin-top":"1vh",
+    "height":"4vh",
+    "width": "10vw",
+    "font-size":"1em",
+    #Grid Layout
+    "grid-column-start":"7",
+    "grid-column-end": "8",
+}
 PERIOD_DROPDOWN_STYLE = {
     "color": "#1B15BF",
     "margin-top":"0.5vh",
@@ -88,6 +125,7 @@ MAIN_DIV_STYLE = {
     "width": "95vw",
     "height":"90vh",
     "background-color": "#bbdefb",
+    "zIndex": 1,
 }
 FIRST_ROW_STYLE = {
     "position": "relative",
@@ -147,21 +185,21 @@ TEXT_STYLE = {
 PIE_GRAPH = {
     "position": "relative",
     "top": "0vh",
-    "left": 0,
-    "height": "35vh",
-    "width":"40vw",
+    "left": "5vw",
+    "height": "45vh",
+    "width":"85vw",
 }
 SECOND_ROW_STYLE = {
     "position": "relative",
     "width": "95vw",
     "height":"60vh",
 }
-TIMELINE_GRAPH ={
+SUPPLY_DEMAND_GRAPH ={
     "position": "relative",
     "top": "0vh",
-    "left": "5vw",
-    "height": "45vh",
-    "width":"85vw",
+    "left": 0,
+    "height": "35vh",
+    "width":"40vw",
 }
 
 content= html.Div([ 
@@ -171,14 +209,22 @@ content= html.Div([
 
     html.H5("GRAPHS", style= TITLE_STYLE),
 
+    dcc.DatePickerSingle(
+        id= 'graphs-date-input',
+        date=date(2020, 12, 20),
+        display_format= 'Y-M-D',
+        style= DATE_PICKER_STYLE
+    ),
+
     dcc.Dropdown(
-        id='dropdown-period',
+        id='graphs-period-input',
         options=[
-            {'label': 'Daily', 'value': 'Daily'},
-            {'label': 'Monthly', 'value': 'Monthly'},
-            {'label': 'Yearly', 'value': 'Yearly'},
+            {'label': 'Daily', 'value': 'daily'},
+            {'label': 'Weekly', 'value': 'weekly'},
+            {'label': 'Monthly', 'value': 'monthly'},
+            {'label': 'Yearly', 'value': 'yearly'},
         ],
-        # value='Daily',
+        value='weekly',
         placeholder= 'Period',
         style=PERIOD_DROPDOWN_STYLE
     )],
@@ -192,7 +238,7 @@ content= html.Div([
                     html.H2("MEAN PRICE", style= TEXT_STYLE),
                     html.H5("Mean price  in the current month", style= TEXT_STYLE),
                 ]),
-                html.H2("$ 1.340", style= TEXT_STYLE),
+                html.H2(id= 'mean-price-graphs', style= TEXT_STYLE),
             ],
             style= SUMMARY_DATA_STYLE,
             ),
@@ -202,7 +248,7 @@ content= html.Div([
                     html.H2("ENSO", style= TEXT_STYLE),
                     html.H5("El Niño–Southern Oscillation (ENSO) ", style= TEXT_STYLE),
                 ]),
-                html.H2("0.5", style= TEXT_STYLE),
+                html.H2(id= "enso-graphs", style= TEXT_STYLE),
             ],
             style= SUMMARY_DATA_STYLE,
             ),
@@ -212,7 +258,7 @@ content= html.Div([
                     html.H2("RESERVES LEVEL", style= TEXT_STYLE),
                     html.H5("Total amount of water stored in reservoirs", style= TEXT_STYLE),
                 ]),
-                html.H2("5'100.234 m3", style= TEXT_STYLE)
+                html.H2(id= "reserves-level-graphs", style= TEXT_STYLE)
             ],
             style= SUMMARY_DATA_STYLE,
             ),
@@ -222,9 +268,9 @@ content= html.Div([
 
         html.Div([
             dcc.Graph(
-                id='pie-graph',
-                figure=pie_graph
-                ,style=PIE_GRAPH
+                id='demand-generation-graphs',
+                # figure=SupplyDemand_graph,
+                style=SUPPLY_DEMAND_GRAPH
             )
         ],
         style= SECOND_COL_STYLE,
@@ -235,9 +281,9 @@ content= html.Div([
 
     html.Div([
         dcc.Graph(
-            id='time-graph',
-            figure=timeline_graph
-            ,style=TIMELINE_GRAPH
+            id='pie-graph',
+            figure=pie_graph
+            ,style=PIE_GRAPH
         ),
     ],
     style= SECOND_ROW_STYLE,
