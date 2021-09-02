@@ -238,7 +238,7 @@ content= html.Div([
                     html.H2("MEAN PRICE", style= TEXT_STYLE),
                     html.H5("Mean price  in the current month", style= TEXT_STYLE),
                 ]),
-                html.H2(id= 'mean-price-graphs', style= TEXT_STYLE),
+                html.H3(id= 'mean-price-graphs', style= TEXT_STYLE),
             ],
             style= SUMMARY_DATA_STYLE,
             ),
@@ -248,7 +248,7 @@ content= html.Div([
                     html.H2("ENSO", style= TEXT_STYLE),
                     html.H5("El Niño–Southern Oscillation (ENSO) ", style= TEXT_STYLE),
                 ]),
-                html.H2(id= "enso-graphs", style= TEXT_STYLE),
+                html.H3(id= "enso-graphs", style= TEXT_STYLE),
             ],
             style= SUMMARY_DATA_STYLE,
             ),
@@ -258,7 +258,7 @@ content= html.Div([
                     html.H2("RESERVES LEVEL", style= TEXT_STYLE),
                     html.H5("Total amount of water stored in reservoirs", style= TEXT_STYLE),
                 ]),
-                html.H2(id= "reserves-level-graphs", style= TEXT_STYLE)
+                html.H3(id= "reserves-level-graphs", style= TEXT_STYLE)
             ],
             style= SUMMARY_DATA_STYLE,
             ),

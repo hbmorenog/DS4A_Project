@@ -235,7 +235,7 @@ content= html.Div([
             html.Div([
                 html.H2("RESERVES", style= TEXT_STYLE),
                 # html.H3(str(reserves_lvl)+" m3", style= TEXT_STYLE),
-                html.H2(id= "reserves-level-home", style= TEXT_STYLE),
+                html.H3(id= "reserves-level-home", style= TEXT_STYLE),
             ]),
             html.Img(src= "/assets/img/droplet-half.svg", style= CENTRAL_ICON_STYLE),
         ],
@@ -245,7 +245,8 @@ content= html.Div([
         html.Div([
             html.Div([
                 html.H2("CURRENT PRICE", style= TEXT_STYLE),
-                html.H3("$ "+str(price), style= TEXT_STYLE),
+                # html.H3("$ "+str(price), style= TEXT_STYLE),
+                html.H3(id= "current-price-home", style= TEXT_STYLE),
             ]),
             html.Img(src= "/assets/img/tags.svg", style= CENTRAL_ICON_STYLE),
         ],
@@ -254,8 +255,9 @@ content= html.Div([
 
         html.Div([
             html.Div([
-                html.H2("FORECAST", style= TEXT_STYLE),
-                html.H3("$ "+str(forecast), style= TEXT_STYLE)
+                html.H2("EXPECTED PRICE", style= TEXT_STYLE),
+                # html.H3("$ "+str(forecast), style= TEXT_STYLE)
+                html.H3(id= "expected-price-home", style= TEXT_STYLE),
             ]),
             html.Img(src= "/assets/img/graph-up.svg", style= CENTRAL_ICON_STYLE),
         ],
@@ -268,16 +270,17 @@ content= html.Div([
 
     html.Div([
         dcc.Graph(
-            id='time-graph',
-            figure=timeline_graph
-            ,style=TIMELINE_GRAPH
+            id='energy-price-home',
+            # figure=timeline_graph,
+            style=TIMELINE_GRAPH
         ),
 
         html.Div([
             html.Div([
                 html.Div([
                     html.H2("PERCENTAGE ERROR", style= TEXT_STYLE),
-                    html.H3("75%", style= TEXT_STYLE),
+                    # html.H3("75%", style= TEXT_STYLE),
+                    html.H3(id= "percentage-error-home", style= TEXT_STYLE),
                 ],
                 style= {
                         "position": "relative",

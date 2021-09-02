@@ -32,7 +32,7 @@ app.layout = html.Div([
     ], style={'columnCount' : 1}
 )
 
-ip_general = "http://18.216.83.75:80"
+ip_general = "http://18.217.26.122:80"
 
 # --------- HOME CALLBACKS -------------
 
@@ -42,7 +42,7 @@ ip_general = "http://18.216.83.75:80"
             Output('reserves-level-home', 'children')],
             [Input('home-date-input', 'date'),
             Input('home-period-input', 'value')])
-def get_data_graphs(date_value, period_value):
+def get_data_home(date_value, period_value):
 
     # Convert date
     if date_value is not None:
@@ -69,6 +69,14 @@ def get_data_graphs(date_value, period_value):
 
     df_pie = df_pie.reset_index()
     df_pie.columns = ["Type", "Value"]
+    di = {
+        "COGENERADOR": "COGENERATOR",
+        "EOLICA": "WIND",
+        "HIDRAULICA": "HYDRAULIC",
+        "TERMICA": "THERMAL"
+    }
+
+    df_pie = df_pie.replace({"Type": di})
 
     # Drop rows
     df_pie.drop(df_pie.loc[df_pie['Type']=='mean_price'].index, inplace=True)
@@ -78,8 +86,86 @@ def get_data_graphs(date_value, period_value):
     df_pie["Value"] = pd.to_numeric(df_pie["Value"])
 
     figure = px.pie(df_pie, values= 'Value', names= 'Type')
+    figure.update_layout(legend=dict(
+                        orientation="h",
+                        yanchor="bottom",
+                        y=-0.5,
+                        xanchor="right",
+                        x=0.9))
+
+    figure.update_layout(annotations = [dict(xref='paper', yref='paper', x=0.1, y=1.0,
+                    xanchor='left', yanchor='bottom',
+                    text='CONTRIBUTION',
+                    font=dict(family='Purisa',
+                            size=24,
+                            color='#15B9BF'),
+                    showarrow=False)])
 
     return figure, reserves_level_rounded
+
+# GET FORECAST HOME
+
+@app.callback([Output('energy-price-home', 'figure'),
+            Output('current-price-home', 'children'),
+            Output('expected-price-home', 'children'),
+            Output('percentage-error-home', 'children')],
+            [Input('home-date-input', 'date'),
+            Input('home-model-input', 'value'),
+            Input('home-period-input', 'value')])
+def get_forecast_home(date_value, model_value, period_value):
+
+    # Convert date
+    if date_value is not None:
+        date_object = date.fromisoformat(date_value)
+        date_string = str(date_object.strftime('%Y-%m-%d'))
+
+    # Connect to IP
+    url = ip_general + '/forecast'
+    params =   {"date": date_string,
+    "model": model_value,
+    "period": period_value
+    }
+    r = requests.post(url = url, params = params) 
+    response = r.json()
+
+    dataframe = pd.DataFrame.from_dict(response, orient="index")
+    dataframe = dataframe.transpose()
+
+    # ENERGY PRICE GRAPH
+
+    figure = px.line(dataframe,  y=["Real", "Expected"], line_shape="spline", render_mode="svg")
+    # Horizontal Legends - Position Top Right
+    figure.update_layout(legend=dict(
+                        orientation="h",
+                        yanchor="bottom",
+                        y=1.02,
+                        xanchor="right",
+                        x=1))
+    figure.update_layout(annotations = [dict(xref='paper', yref='paper', x=0.0, y=1.0,
+                        xanchor='left', yanchor='bottom',
+                        text='ENERGY PRICE $/KWH',
+                        font=dict(family='Purisa',
+                                size=30,
+                                color='#15B9BF'),
+                        showarrow=False)])
+    figure.update_layout(xaxis_title= "Date",
+                        yaxis_title= "$/KWH",
+                        legend_title= "",)
+
+    # CURRENT PRICE
+    current_price = float(dataframe["Real"][-1])
+    current_price_rounded = "$ " + str(round(current_price, 2))
+    
+    # EXPECTED PRICE
+    expected_price = float(dataframe["Expected"][-1])
+    expected_price_rounded = "$ " + str(round(expected_price, 2))
+
+    # PERCENTAGE ERROR
+    dataframe["Error"] = 100 * abs((dataframe["Expected"]-dataframe["Real"])/dataframe["Real"])
+    percentage_error = dataframe["Error"].mean()
+    percentage_error_rounded = str(round(percentage_error, 2)) + "%"
+
+    return figure, current_price_rounded, expected_price_rounded, percentage_error_rounded
     
 # --------- GRAPHS CALLBACKS -------------
 
@@ -149,15 +235,24 @@ def get_historic_graphs(date_value, period_value):
     dataframe = dataframe.transpose()
     dataframe.columns = ["Demand", "Generation"]
 
-    figure_1 = px.line(dataframe,  y=["Demand", "Generation"], line_shape="spline", render_mode="svg", title= "DEMAND AND GENERATION")
+    figure_1 = px.line(dataframe,  y=["Demand", "Generation"], line_shape="spline", render_mode="svg")
     # Horizontal Legends - Position Top Right
     figure_1.update_layout(legend=dict(
         orientation="h",
         yanchor="bottom",
         y=1.02,
         xanchor="right",
-        x=1
-    ))
+        x=1))
+    figure_1.update_layout(annotations = [dict(xref='paper', yref='paper', x=0.0, y=1.0,
+                        xanchor='left', yanchor='bottom',
+                        text='DEMAND AND GENERATION',
+                        font=dict(family='Purisa',
+                                size=16,
+                                color='#15B9BF'),
+                        showarrow=False)])
+    figure_1.update_layout(xaxis_title= "Date",
+                        yaxis_title= "KWH",
+                        legend_title= "",)
 
     # GENERATION TYPE GRAPH
 
@@ -172,15 +267,24 @@ def get_historic_graphs(date_value, period_value):
     df_total = df_total.transpose()
     df_total.columns = ["COGENERATOR", "WIND", "HYDRAULIC", "SOLAR", "THERMAL"]
 
-    figure_2 = px.line(df_total,  y=["COGENERATOR", "WIND", "HYDRAULIC", "SOLAR", "THERMAL"], line_shape="spline", render_mode="svg", title= "GENERATION TYPE")
+    figure_2 = px.line(df_total,  y=["COGENERATOR", "WIND", "HYDRAULIC", "SOLAR", "THERMAL"], line_shape="spline", render_mode="svg")
     # Horizontal Legends - Position Top Right
     figure_2.update_layout(legend=dict(
         orientation="h",
         yanchor="bottom",
         y=1.02,
         xanchor="right",
-        x=1
-    ))
+        x=1))
+    figure_2.update_layout(annotations = [dict(xref='paper', yref='paper', x=0.0, y=1.0,
+                        xanchor='left', yanchor='bottom',
+                        text='GENERATION TYPE',
+                        font=dict(family='Purisa',
+                                size=16,
+                                color='#15B9BF'),
+                        showarrow=False)])
+    figure_2.update_layout(xaxis_title= "Date",
+                        yaxis_title= "KWH",
+                        legend_title= "",)
 
     return figure_1, figure_2
 
