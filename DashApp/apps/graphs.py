@@ -281,9 +281,9 @@ content= html.Div([
 
     html.Div([
         dcc.Graph(
-            id='pie-graph',
-            figure=pie_graph
-            ,style=PIE_GRAPH
+            id='generation-type-graphs',
+            # figure=pie_graph,
+            style=PIE_GRAPH
         ),
     ],
     style= SECOND_ROW_STYLE,
