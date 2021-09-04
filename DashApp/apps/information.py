@@ -12,6 +12,7 @@ import dash_bootstrap_components as dbc
 import dash_core_components as dcc
 import datetime
 from dash_html_components import Div
+from dash_html_components.Br import Br
 import pandas as pd
   
 # append the path of the
@@ -19,15 +20,25 @@ import pandas as pd
 
 import plotly.express as px
 
+import base64
+
 df = pd.read_csv("https://raw.githubusercontent.com/uiuc-cse/data-fa14/gh-pages/data/iris.csv") 
 
+# eda_path = '/home/brymo/Desktop/Projects/MinTic_Stuff/DS4A/Project/Modelos/Modelos finales/EDA_Resized_Test.jpeg'
+# eda_path = '/assests/img/eda_final.jpeg'
 
-timeline_graph = px.line(df,  y="sepal_width", color="species", line_shape="spline", render_mode="svg")
-pie_graph = px.pie(df, values='species', names='species', title='Especies')  # ESTA LÍNEA CORRIGE LA FALTA DEL GRÁFICO DE PASTEL
+# EDA PDF
+eda_path = '/home/brymo/Desktop/Projects/MinTic_Stuff/DS4A/Project/Front/Repo Front Bryan/DS4A_Project/DashApp/assets/img/eda_final.jpeg'
+eda_file_base64 = base64.b64encode(open(eda_path, 'rb').read()).decode('ascii')
 
-reserves_lvl=21324
-price=211324
-forecast=652234
+# LSTM_DNN MODEL PDF
+
+lstm_dnn_path = '/home/brymo/Desktop/Projects/MinTic_Stuff/DS4A/Project/Front/Repo Front Bryan/DS4A_Project/DashApp/assets/img/lstm_dnn_final.jpeg'
+lstm_dnn_file_base64 = base64.b64encode(open(lstm_dnn_path, 'rb').read()).decode('ascii')
+
+# reserves_lvl=21324
+# price=211324
+# forecast=652234
 
 #---TOP BAR STYLE----------------------------------
 
@@ -64,8 +75,8 @@ TITLE_STYLE={
     "font-size":"4vh",
     "font-family":"Purisa",
     #Grid Layout
-    "grid-column-start":"3",
-    "grid-column-end": "4"
+    "grid-column-start":"5",
+    "grid-column-end": "6"
 }
 
 #---------------------------------
@@ -81,7 +92,7 @@ MAIN_DIV_STYLE = {
 FIRST_ROW_STYLE = {
     "position": "relative",
     "width": "95vw",
-    "height":"95vh",
+    "height":"75vh", #95
     #Grid Layout
     "display":"grid",
     "grid-template-columns":"repeat(2,1fr)",
@@ -93,8 +104,8 @@ FIRST_COL_STYLE = {
     "background-color": "#fafafa",
     "top": "3vh",
     "left": "3vw",
-    "width": "45vw",
-    "height":"80vh",
+    "width": "650px",
+    "height":"550px",
     #Grid Layout
     "grid-column-start":"1",
     "grid-column-end": "2"
@@ -102,32 +113,13 @@ FIRST_COL_STYLE = {
 SECOND_COL_STYLE = {
     "position": "relative",
     "background-color": "#fafafa",
-    "top": "12vh",
+    "top": "3vh",
     "left": "3vw",
-    "width": "40vw",
-    "height":"60vh",
+    "width": "650px",
+    "height":"550px",
     #Grid Layout
     "grid-column-start":"2",
     "grid-column-end": "3"
-}
-SUMMARY_DATA_STYLE = {
-    "position": "relative",
-    "background-color": "#fafafa",
-    "margin": "auto",
-    "height": "10vh",
-    "width":"40vw",
-    #Grid Layout
-    "display":"grid",
-    "grid-template-columns":"repeat(2,1fr)",
-    "gap":"20px",
-    "grid-template-rows":"1",
-}
-CENTRAL_ICON_STYLE = {
-    "position": "relative",
-    "height": "30px",
-    "width":"30px",
-    "display": "flex",
-    "margin": "auto",
 }
 TEXT_STYLE = {
     "position": "relative",
@@ -138,9 +130,45 @@ TEXT_STYLE = {
     "color": "#1B15BF",
     "font-family":"Sawasdee",
 }
-PIE_GRAPH = {
+SECOND_TEXT_STYLE = {
     "position": "relative",
-    "left": 0,
+    "display": "flex",
+    "justify-content": "center",
+    "top": "-40px",
+    #Font Style
+    "color": "#1B15BF",
+    "font-family":"Sawasdee",
+}
+THIRD_TEXT_STYLE = {
+    "position": "relative",
+    "display": "flex",
+    "justify-content": "center",
+    "top": "-50px",
+    #Font Style
+    "color": "#1B15BF",
+    "font-family":"Sawasdee",
+}
+SECOND_ROW_STYLE = {
+    "position": "relative",
+    "width": "95vw",
+    "height":"20vh",
+    #Grid Layout
+    "display":"grid",
+    "grid-template-columns":"repeat(6,1fr)",
+    "gap":"20px",
+    "grid-template-rows":"1",
+}
+M1_STYLE={
+    "text-align": "left",
+    "margin": "auto",
+    "top": "-80px",
+    #Font Style
+    "color": "#1B15BF",
+    "font-size":"7vh",
+    "font-family":"Sawasdee",
+    #Grid Layout
+    "grid-column-start":"1",
+    "grid-column-end": "2"
 }
 
 content= html.Div([ 
@@ -164,35 +192,37 @@ content= html.Div([
 
     html.Div([
         html.Div([
-            html.Div([
-                dcc.Graph(
-                    id='pie-graph',
-                    figure=pie_graph
-                    ,style=PIE_GRAPH
-                )
-            ])
+            html.Div(html.Img(src='data:image/png;base64,{}'.format(eda_file_base64)), style={'overflowY': 'scroll', 'height': 550, 'width': 650})
         ],
         style= FIRST_COL_STYLE,
         ),
 
         html.Div([
-            html.P([
-                "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla quam velit, vulputate eu pharetra nec, mattis ac neque. Duis vulputate commodo lectus, ac blandit elit tincidunt id. Sed rhoncus, tortor sed eleifend tristique, tortor mauris molestie elit, et lacinia ipsum quam nec dui."
-            ]),
-
-            html.P([
-                "Quisque nec mauris sit amet elit iaculis pretium sit amet quis magna. Aenean velit odio, elementum in tempus ut, vehicula eu diam. Pellentesque rhoncus aliquam mattis. Ut vulputate eros sed felis sodales nec vulputate justo hendrerit."
-            ]),
-
-            html.P([
-                "Vivamus varius pretium ligula, a aliquam odio euismod sit amet. Quisque laoreet sem sit amet orci ullamcorper at ultricies metus viverra."
-            ])
+            html.Div(html.Img(src='data:image/png;base64,{}'.format(lstm_dnn_file_base64)), style={'overflowY': 'scroll', 'height': 550, 'width': 650})
         ],
         style= SECOND_COL_STYLE,
         )
     ],
     style= FIRST_ROW_STYLE,
     ),
+
+    html.Div([
+        html.H2("TEAM MEMBERS", style= SECOND_TEXT_STYLE),
+    ],
+    # style= SECOND_ROW_STYLE,
+    ),
+
+    html.Div([
+        html.H4("ANDRÉS BOHÓRQUEZ", style= THIRD_TEXT_STYLE),
+        html.H4("EDGARD RODRIGUEZ", style= THIRD_TEXT_STYLE),
+        html.H4("CARLOS CONTRERAS", style= THIRD_TEXT_STYLE),
+        html.H4("VICTOR LOAIZA", style= THIRD_TEXT_STYLE),
+        html.H4("ANTONIO BARRIOS", style= THIRD_TEXT_STYLE),
+        html.H4("BRYAN MORENO", style= THIRD_TEXT_STYLE),
+    ],
+    style= SECOND_ROW_STYLE,
+    ),
+
 ],
 style=MAIN_DIV_STYLE,
 )

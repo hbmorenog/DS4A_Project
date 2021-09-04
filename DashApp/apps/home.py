@@ -26,9 +26,9 @@ df = pd.read_csv("https://raw.githubusercontent.com/uiuc-cse/data-fa14/gh-pages/
 timeline_graph = px.line(df,  y="sepal_width", color="species", line_shape="spline", render_mode="svg")
 # pie_graph = px.pie(df, values='species', names='species', title='Especies')  # ESTA LÍNEA CORRIGE LA FALTA DEL GRÁFICO DE PASTEL
 
-reserves_lvl=21324
-price=211324
-forecast=652234
+# reserves_lvl=21324
+# price=211324
+# forecast=652234
 
 #---TOP BAR STYLE----------------------------------
 
