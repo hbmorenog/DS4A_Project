@@ -192,13 +192,21 @@ content= html.Div([
 
     html.Div([
         html.Div([
-            html.Div(html.Img(src='data:image/png;base64,{}'.format(eda_file_base64)), style={'overflowY': 'scroll', 'height': 550, 'width': 650})
+            html.Div([
+                html.Div(html.Img(src="/assets/img/eda_final.jpeg", style={'height': "19218px", 'width': "550px"})),
+            ],
+            style={'overflowY': 'scroll', 'height': 550, 'width': 650}
+            ),
         ],
         style= FIRST_COL_STYLE,
         ),
 
         html.Div([
-            html.Div(html.Img(src='data:image/png;base64,{}'.format(lstm_dnn_file_base64)), style={'overflowY': 'scroll', 'height': 550, 'width': 650})
+            html.Div([
+                html.Div(html.Img(src="/assets/img/lstm_dnn_final.jpeg", style={'height': "12451px", 'width': "550px"})),
+            ],
+            style={'overflowY': 'scroll', 'height': 550, 'width': 650}
+            ),
         ],
         style= SECOND_COL_STYLE,
         )
